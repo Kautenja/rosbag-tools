@@ -1,6 +1,6 @@
 # ROSBag Tools
 
-Use `python <script> --help` to print documentation for each of the
+Use `python3 <script> --help` to print documentation for each of the
 following scripts.
 
 | Script                | Description                             |
