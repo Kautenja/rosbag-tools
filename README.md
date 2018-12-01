@@ -1,4 +1,4 @@
-# Python ROSBag Tools
+# ROSBag Tools
 
 Use `python <script> --help` to print documentation for each of the
 following scripts.
