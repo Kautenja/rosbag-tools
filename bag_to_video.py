@@ -14,7 +14,8 @@ def bag_to_video(
     input_file: Bag,
     output_file: str,
     topic: str,
-    fps: float,
+    fps: float=30,
+    codec: str='MJPG',
 ) -> None:
     """
     Convert a ROS bag with image topic to a video file.
@@ -24,6 +25,7 @@ def bag_to_video(
         output_file: the path to an output video file to create
         topic: the topic to read image data from
         fps: the frame rate of the video
+        codec: the codec to use when outputting to the video file
 
     Returns:
         None
@@ -40,7 +42,7 @@ def bag_to_video(
         # open the video file if it isn't open
         if video is None:
             # create the video codec
-            codec = cv2.VideoWriter_fourcc(*'MJPG')
+            codec = cv2.VideoWriter_fourcc(*codec)
             # open the output video file
             cv_dims = (msg.width, msg.height)
             video = cv2.VideoWriter(output_file, codec, fps, cv_dims)
@@ -74,7 +76,7 @@ if __name__ == '__main__':
     # add an argument for the video file
     PARSER.add_argument('--video_file', '-v',
         type=str,
-        help='The output video file (.avi) to create .',
+        help='The output video file to create .',
         required=True,
     )
     # add an argument for the topic to get image data from
@@ -86,21 +88,25 @@ if __name__ == '__main__':
     # add an argument for the topics to subscribe to
     PARSER.add_argument('--fps', '-f',
         type=int,
-        help='The frame-rate of the video topic.',
+        help='The frame-rate of the video file to create.',
         required=False,
-        default=None,
+        default=30,
+    )
+    # add an argument for the topics to subscribe to
+    PARSER.add_argument('--codec', '-c',
+        type=str,
+        help='The codec of the video file to create.',
+        required=False,
+        default='MJPG',
     )
     # get the arguments from the argument parser
     ARGS = PARSER.parse_args()
-    # ensure the output video file is the correct file type
-    if '.avi' not in ARGS.video_file:
-        raise ValueError('video_file must be a .avi file!')
     # iterate over all the frames in the video
     try:
         # open the input bag file
-        with Bag(ARGS.bag_file, 'r') as bag_file:
+        with Bag(ARGS.bag_file, 'r') as bag:
             # convert the bag file to a video file with the command line args
-            bag_to_video(bag_file, ARGS.video_file, ARGS.topic, ARGS.fps)
+            bag_to_video(bag, ARGS.video_file, ARGS.topic, ARGS.fps, ARGS.codec)
     except KeyboardInterrupt:
         pass
 
