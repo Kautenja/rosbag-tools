@@ -1,4 +1,4 @@
-"""A script to convert a MOV file to a ROSbag."""
+"""A script to convert a video file to a ROS bag."""
 import argparse
 import os
 import sys
@@ -27,6 +27,7 @@ def video_to_bag(
     frame_skip: int=1,
 ) -> None:
     """
+    Convert a video file to a ROS bag file.
 
     Args:
         video_path: the path to the video to convert to a bag
@@ -38,6 +39,7 @@ def video_to_bag(
         frame_skip: the number of frames to skip between output messages
 
     Returns:
+        None
 
     """
     # open the video file
@@ -92,7 +94,7 @@ if __name__ == '__main__':
     # add an argument for the video file
     PARSER.add_argument('--video_file', '-v',
         type=str,
-        help='The video file (.mov) to convert to a ROSbag (.bag).',
+        help='The video file to convert to a ROS bag (.bag).',
         required=True,
     )
     # add an argument for the video file
