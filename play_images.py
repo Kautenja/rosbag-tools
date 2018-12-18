@@ -35,7 +35,10 @@ def play_images(bag_file: Bag, topics: list) -> None:
                 windows[topic] = Window(title, msg.height, msg.width)
             # get the pixels of the camera image and display them
             img = get_camera_image(msg.data, windows[topic].shape)
-            windows[topic].show(img[..., :3][..., ::-1])
+            print(msg.encoding)
+            if msg.encoding == 'bgr8':
+                img = img[..., ::-1]
+            windows[topic].show(img[..., :3])
 
     # shut down the viewer windows
     for window in windows.values():
